@@ -1,0 +1,48 @@
+@baseUrl = http://localhost:3000
+@token = PASTE_TOKEN_HERE
+
+================
+POST
+================
+Description:
+Register first test user.
+Creates new user account and returns JWT token.
+
+###
+POST {{baseUrl}}/auth/register
+Content-Type: application/json
+
+{
+  "username": "andris",
+  "email": "andris@test.com",
+  "password": "123456"
+}
+
+================
+POST
+================
+Description:
+Register second test user.
+This user is used as a contact/receiver in private chat testing.
+
+###
+POST {{baseUrl}}/auth/register
+Content-Type: application/json
+
+{
+  "username": "annaa",
+  "email": "annaa@test.com",
+  "password": "123456"
+}
+
+================
+GET
+================
+Description:
+Get currently authenticated user.
+Requires JWT token.
+Used by the mobile app after restart to restore currentUser.
+
+###
+GET {{baseUrl}}/auth/me
+Authorization: Bearer {{token}}

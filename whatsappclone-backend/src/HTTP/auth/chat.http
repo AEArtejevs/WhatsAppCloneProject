@@ -1,0 +1,59 @@
+@baseUrl = http://localhost:3000
+@token = PASTE_TOKEN_HERE
+@chatId = 1
+@otherUserId = 2
+
+================
+GET
+================
+Description:
+Get all chats for the logged-in user.
+Returns chat list with members and last message preview.
+
+###
+GET {{baseUrl}}/chats
+Authorization: Bearer {{token}}
+
+================
+POST
+================
+Description:
+Create or open private chat with another user.
+If chat already exists, backend returns existing chat.
+If not, backend creates a new private chat.
+
+###
+POST {{baseUrl}}/chats/private
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "otherUserId": {{otherUserId}}
+}
+
+================
+GET
+================
+Description:
+Get all messages from selected chat.
+Used by ChatDetailView to display full message history.
+
+###
+GET {{baseUrl}}/chats/{{chatId}}/messages
+Authorization: Bearer {{token}}
+
+================
+POST
+================
+Description:
+Send message to selected chat.
+Backend uses JWT token as senderId and finds receiverId from chat members.
+
+###
+POST {{baseUrl}}/chats/{{chatId}}/messages
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "content": "Hello, this is a test message."
+}

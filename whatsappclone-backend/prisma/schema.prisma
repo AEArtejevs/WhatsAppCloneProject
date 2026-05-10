@@ -1,0 +1,69 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           Int      @id @default(autoincrement())
+  username     String
+  email        String   @unique
+  passwordHash String
+  createdAt    DateTime @default(now())
+
+  sentMessages     ChatMessage[] @relation("SentMessages")
+  receivedMessages ChatMessage[] @relation("ReceivedMessages")
+  chatMembers      ChatMember[]
+}
+
+model Chat {
+  id        Int      @id @default(autoincrement())
+  isGroup   Boolean  @default(false)
+  groupName String?
+  createdAt DateTime @default(now())
+
+  members  ChatMember[]
+  messages ChatMessage[]
+}
+
+model ChatMember {
+  id        Int      @id @default(autoincrement())
+  chatId    Int
+  userId    Int
+  createdAt DateTime @default(now())
+
+  chat Chat @relation(fields: [chatId], references: [id], onDelete: Cascade)
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([chatId, userId])
+}
+
+model ChatMessage {
+  id          Int           @id @default(autoincrement())
+  chatId      Int
+  senderId    Int
+  receiverId  Int
+  content     String
+  messageType MessageType   @default(TEXT)
+  status      MessageStatus @default(SENT)
+  createdAt   DateTime      @default(now())
+
+  chat     Chat @relation(fields: [chatId], references: [id], onDelete: Cascade)
+  sender   User @relation("SentMessages", fields: [senderId], references: [id], onDelete: Cascade)
+  receiver User @relation("ReceivedMessages", fields: [receiverId], references: [id], onDelete: Cascade)
+}
+
+enum MessageType {
+  TEXT
+  IMAGE
+  FILE
+}
+
+enum MessageStatus {
+  SENT
+  DELIVERED
+  READ
+}

@@ -1,0 +1,34 @@
+@baseUrl = http://localhost:3000
+
+================
+POST
+================
+Description:
+Login existing user.
+If email and password are correct, backend returns JWT token and user data.
+Use returned token for protected requests.
+
+###
+POST {{baseUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "andris@test.com",
+  "password": "123456"
+}
+
+================
+POST
+================
+Description:
+Test failed login.
+Used to confirm backend correctly rejects wrong password.
+
+###
+POST {{baseUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "andris@test.com",
+  "password": "wrong"
+}

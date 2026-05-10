@@ -1,0 +1,14 @@
+@baseUrl = http://localhost:3000
+@token = PASTE_TOKEN_HERE
+
+================
+GET
+================
+Description:
+Get contact list.
+Returns all registered users except the currently logged-in user.
+Used by ContactsView to start a new chat.
+
+###
+GET {{baseUrl}}/users
+Authorization: Bearer {{token}}
